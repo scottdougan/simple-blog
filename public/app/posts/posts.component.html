@@ -1,8 +1,10 @@
-<h2>Posts</h2>
-<ul class="posts">
-  <li *ngFor="let post of posts" (click)="onSelect(post)"
-      [class.selected]="[post] === selectedPost">
-    <span class="badge">{{post.id}}</span>
-    <span>{{post.title}}</span>
-  </li>
-</ul>
+<div>
+  <h2>Posts</h2>
+    <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+  <div>
+    <div *ngFor="let post of posts | async"
+         (click)="gotoDetail(hero)" class="search-result" >
+      {{post.title}}
+    </div>
+  </div>
+</div>

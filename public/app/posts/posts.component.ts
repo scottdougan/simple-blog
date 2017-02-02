@@ -1,8 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
 
+import { Observable }        from 'rxjs/Observable';
+import { Subject }           from 'rxjs/Subject';
+
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+
 import { Post }         from '../shared/post-service/post';
 import { PostService }  from '../shared/post-service/post.service';
+
 
 @Component({
   moduleId: module.id,
@@ -10,40 +19,32 @@ import { PostService }  from '../shared/post-service/post.service';
   templateUrl: './posts.component.html'
 })
 export class PostsComponent implements OnInit {
-  posts: Post[];
+  posts: Observable<Post[]>;
+  private searchTerms = new Subject<string>();
   selectedPost: Post;
 
   constructor(
     private postService: PostService,
     private router: Router) { }
 
-  getPosts(): void {
-    this.postService
-      .getPosts()
-      .then(posts => this.posts = posts);
+  search(term: string): void {
+    this.searchTerms.next(term);
   }
 
-  // add(name: string): void {
-  //   name = name.trim();
-  //   if (!name) { return; }
-  //   this.heroService.create(name)
-  //     .then(hero => {
-  //       this.heroes.push(hero);
-  //       this.selectedHero = null;
-  //     });
-  // }
-
-  // delete(hero: Hero): void {
-  //   this.heroService
-  //       .delete(hero.id)
-  //       .then(() => {
-  //         this.heroes = this.heroes.filter(h => h !== hero);
-  //         if (this.selectedHero === hero) { this.selectedHero = null; }
-  //       });
-  // }
-
   ngOnInit(): void {
-    this.getPosts();
+    this.posts = this.searchTerms
+      .debounceTime(300)
+      .distinctUntilChanged()   
+      .switchMap(term => this.postService.search(term))
+      .catch(error => {
+        // TODO: Add real error handling
+        console.log(error);
+        return Observable.of<Post[]>([]);
+      });
+  }
+
+  ngAfterViewInit(){
+    this.search(""); // Init the list of posts
   }
 
   onSelect(post: Post): void {
