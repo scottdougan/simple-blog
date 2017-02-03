@@ -9,12 +9,15 @@ import { PostService }  from '../shared/post-service/post.service';
   templateUrl: 'home.component.html'
 })
 export class HomeComponent { 
+  errorMessage: string;
   posts: Post[] = [];
 
   constructor(private postService: PostService) { }
 
   ngOnInit(): void {
     this.postService.getPosts()
-      .then(posts => this.posts = posts.slice(1, 5));
+                    .subscribe(
+                       posts => this.posts = posts.slice(1, 5),
+                       error =>  this.errorMessage = <any>error);
   }
 }

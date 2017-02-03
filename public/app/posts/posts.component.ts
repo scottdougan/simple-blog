@@ -19,8 +19,10 @@ import { PostService }  from '../shared/post-service/post.service';
   templateUrl: './posts.component.html'
 })
 export class PostsComponent implements OnInit {
-  posts: Observable<Post[]>;
+  errorMessage: string;
+  posts: Post[];
   private searchTerms = new Subject<string>();
+  private postSearchoOservable: Observable<Post[]>
   selectedPost: Post;
 
   constructor(
@@ -32,26 +34,34 @@ export class PostsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.posts = this.searchTerms
-      .debounceTime(300)
-      .distinctUntilChanged()   
+    this.getPosts();
+    this.postSearchoOservable = this.searchTerms
+      .debounceTime(300)        // wait 300ms after each keystroke before considering the term
+      .distinctUntilChanged()   // ignore if next search term is same as previous
       .switchMap(term => this.postService.search(term))
       .catch(error => {
-        // TODO: Add real error handling
+        // TODO: add real error handling
         console.log(error);
         return Observable.of<Post[]>([]);
       });
+
+      this.postSearchoOservable.subscribe(
+         posts => this.posts = posts,
+         error =>  this.errorMessage = <any>error);
   }
 
-  ngAfterViewInit(){
-    this.search(""); // Init the list of posts
+  getPosts() {
+    this.postService.getPosts()
+                    .subscribe(
+                       posts => this.posts = posts,
+                       error =>  this.errorMessage = <any>error);
   }
 
-  onSelect(post: Post): void {
-    this.selectedPost = post;
-  }
+  // onSelect(post: Post): void {
+  //   this.selectedPost = post;
+  // }
 
-  gotoDetail(): void {
-    this.router.navigate(['/detail', this.selectedPost.id]);
-  }
+  // gotoDetail(): void {
+  //   this.router.navigate(['/detail', this.selectedPost.id]);
+  // }
 }

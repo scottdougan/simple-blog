@@ -2,7 +2,7 @@
   <h2>Posts</h2>
     <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
   <div>
-    <div *ngFor="let post of posts | async"
+    <div *ngFor="let post of posts"
          (click)="gotoDetail(hero)" class="search-result" >
       {{post.title}}
     </div>

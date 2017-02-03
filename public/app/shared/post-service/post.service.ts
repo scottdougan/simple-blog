@@ -10,22 +10,19 @@ import { Post } from './post';
 
 @Injectable()
 export class PostService {
-  private headers = new Headers({'Content-Type': 'application/json'});
   private postsUrl = 'http://localhost:4000/posts';  
 
   constructor(private http: Http) { }
 
-  getPosts(): Promise<Post[]> {
+  getPosts(): Observable<Post[]> {
     return this.http.get(this.postsUrl)
-               .toPromise()
-               .then(response => response.json().posts as Post[])
-               .catch(this.handleError);
+               .map(response => response.json().posts as Post[])
   }
 
-  getPost(id: number): Promise<Post> {
-    return this.getPosts()
-               .then(posts => posts.find(post => post.id === id));
-  }
+  // getPost(id: number): Promise<Post> {
+  //   return this.getPosts()
+  //              .then(posts => posts.find(post => post.id === id));
+  // }
 
   search(term: string): Observable<Post[]> {
     return this.http

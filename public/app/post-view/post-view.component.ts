@@ -20,9 +20,9 @@ export class PostViewComponent implements OnInit {
     private location: Location) {}
 
   ngOnInit(): void {
-    this.route.params
-      .switchMap((params: Params) => this.postService.getPost(+params['id']))
-      .subscribe(post => this.post = post);
+    // this.route.params
+    //   .switchMap((params: Params) => this.postService.getPost(+params['id']))
+    //   .subscribe(post => this.post = post);
   }
 
   goBack(): void {
