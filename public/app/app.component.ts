@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { Post }         from './shared/post-service/post';
-import { PostService }  from './shared/post-service/post.service';
 
 @Component({
     selector: 'app',
@@ -16,7 +14,4 @@ import { PostService }  from './shared/post-service/post.service';
     `
 })
 export class AppComponent { 
-  posts: Post[] = [];
-
-  constructor(private postService: PostService) { }
 }
