@@ -19,9 +19,4 @@ export class AppComponent {
   posts: Post[] = [];
 
   constructor(private postService: PostService) { }
-
-  ngOnInit(): void {
-    this.postService.getPosts()
-      .then(posts => this.posts = posts.slice(1, 5));
-  }
 }
