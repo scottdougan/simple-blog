@@ -51,8 +51,15 @@ app.get('/posts', function (req, res) {
 });
 
 app.get('/posts/:id', function(req, res) {
-   console.log(req);
-   res.send(JSON.stringify({posts: posts}));
+    let post = {};
+    
+    if (req.params && req.params.id) {
+      post = _.find(posts, function(post) {
+        return post.id == req.params.id;
+      });
+    }
+
+   res.send(JSON.stringify({posts: post}));
 });
 
 app.listen(4000, function () {
