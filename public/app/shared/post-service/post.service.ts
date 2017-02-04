@@ -19,10 +19,11 @@ export class PostService {
                .map(response => response.json().posts as Post[])
   }
 
-  // getPost(id: number): Promise<Post> {
-  //   return this.getPosts()
-  //              .then(posts => posts.find(post => post.id === id));
-  // }
+  getPost(id: string): Observable<Post> {
+    return this.http
+               .get(`${this.postsUrl}/${id}`)
+               .map(response => response.json().posts as Post);
+  }
 
   search(term: string): Observable<Post[]> {
     return this.http

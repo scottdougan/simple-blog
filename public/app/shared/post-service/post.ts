@@ -1,4 +1,4 @@
 export class Post {
-  id: number;
+  id: string;
   title: string;
 }

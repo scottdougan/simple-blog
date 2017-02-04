@@ -6,7 +6,7 @@ import { PostViewComponent } from './post-view.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'post/:id', component: PostViewComponent }
+      { path: 'posts/:id', component: PostViewComponent }
     ])
   ],
   exports: [RouterModule]

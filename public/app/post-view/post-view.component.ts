@@ -12,6 +12,7 @@ import { PostService }  from '../shared/post-service/post.service';
   templateUrl: './post-view.component.html'
 })
 export class PostViewComponent implements OnInit {
+  errorMessage: string;
   post: Post;
 
   constructor(
@@ -19,10 +20,20 @@ export class PostViewComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location) {}
 
+  // routerOnActivate(curr: RouteSegment): void {
+  //       let id = curr.getParam('id');
+  //       this.postService.getPost(id)
+  //                       .subscribe(
+  //                          post => this.post = post,
+  //                          error =>  this.errorMessage = <any>error);
+  //   }
+
   ngOnInit(): void {
-    // this.route.params
-    //   .switchMap((params: Params) => this.postService.getPost(+params['id']))
-    //   .subscribe(post => this.post = post);
+    this.route.params
+      .switchMap((params: Params) => this.postService.getPost(params['id']))
+      .subscribe(
+        post => this.post = post,
+        error =>  this.errorMessage = <any>error);
   }
 
   goBack(): void {
