@@ -1,4 +1,6 @@
 export class Post {
-  id: string;
-  title: string;
+  _id: String;
+  date: Date;
+  author: String;
+  title: String;
 }

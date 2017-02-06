@@ -1,4 +1,6 @@
 <div *ngIf="post">
-  <h2>{{post.title}}</h2>
+  <h2>{{post.author}} - {{post.date | date: 'dd/MM/yyyy'}}</h2>
+  <h4>{{post.title}}</h4>
+  <p> {{post.post}} </p>
   <button (click)="goBack()">Back</button>
 </div>
