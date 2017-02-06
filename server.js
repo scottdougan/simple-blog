@@ -1,7 +1,7 @@
 const express = require('express'),
-	mongoose = require('mongoose'),
+  mongoose = require('mongoose'),
   mongoQS = require('mongo-querystring'),
-	passport = require('passport'),
+  passport = require('passport'),
   _ = require('underscore'),
   post = require('./models/post');
 
