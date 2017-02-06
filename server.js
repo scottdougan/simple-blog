@@ -3,7 +3,6 @@ const express = require('express'),
   mongoQS = require('mongo-querystring'),
 	passport = require('passport'),
   _ = require('underscore'),
-  fuse = require('fuse.js'),
   post = require('./models/post');
 
 // Setup
@@ -13,30 +12,6 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-
-const posts = [
-  {id: 10, title: 'Black Ash'},
-  {id: 11, title: 'Gray Birch'},
-  {id: 12, title: 'Butternut'},
-  {id: 13, title: 'Black Cherry'},
-  {id: 14, title: 'Red Spruce'},
-  {id: 15, title: 'Black Walnut'}
-];
-
-const fuseOptions = {
-  shouldSort: true,
-  tokenize: true,
-  matchAllTokens: true,
-  threshold: 0.2,
-  location: 0,
-  distance: 100,
-  maxPatternLength: 32,
-  minMatchCharLength: 1,
-  keys: [
-    "title",
-  ]
-};
-const fuseSearch = new fuse(posts, fuseOptions);
 
 mongoose.connect('mongodb://localhost/simple_blog');
 qs = new mongoQS({});
