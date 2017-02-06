@@ -57,11 +57,7 @@ export class PostsComponent implements OnInit {
                        error =>  this.errorMessage = <any>error);
   }
 
-  // onSelect(post: Post): void {
-  //   this.selectedPost = post;
-  // }
-
-  // gotoDetail(): void {
-  //   this.router.navigate(['/detail', this.selectedPost.id]);
-  // }
+  onSelect(post: Post): void {
+    this.router.navigate(['/posts', post._id]);
+  }
 }

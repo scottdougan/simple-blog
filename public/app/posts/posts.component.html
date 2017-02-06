@@ -3,7 +3,7 @@
     <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
   <div>
     <div *ngFor="let post of posts"
-         (click)="gotoDetail(hero)" class="search-result" >
+         (click)="onSelect(post)" class="search-result" >
       {{post.title}}
     </div>
   </div>
