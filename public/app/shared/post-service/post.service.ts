@@ -27,7 +27,7 @@ export class PostService {
 
   search(term: string): Observable<Post[]> {
     return this.http
-               .get(`${this.postsUrl}/?postTitle=${term}`)
+               .get(`${this.postsUrl}/?title=~${term}`)
                .map(response => response.json().posts as Post[]);
   }
 
