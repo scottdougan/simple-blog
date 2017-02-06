@@ -1,10 +1,18 @@
 const express = require('express'),
 	mongoose = require('mongoose'),
+  mongoQS = require('mongo-querystring'),
 	passport = require('passport'),
   _ = require('underscore'),
-  fuse = require('fuse.js');
+  fuse = require('fuse.js'),
+  post = require('./models/post');
 
+// Setup
 const app = express();
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 const posts = [
   {id: 10, title: 'Black Ash'},
@@ -30,36 +38,42 @@ const fuseOptions = {
 };
 const fuseSearch = new fuse(posts, fuseOptions);
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+mongoose.connect('mongodb://localhost/simple_blog');
+qs = new mongoQS({});
 
 
+// Endpoints
 app.get('/posts', function (req, res) {
-  if (req.query && req.query.postTitle) {
-    const searchPostTitle = req.query.postTitle;
-    console.log(`Searhing for ${searchPostTitle}`);
+  const query = qs.parse(req.query);
 
-    const searchResults = fuseSearch.search(searchPostTitle);
-    res.send(JSON.stringify({posts: searchResults}));
-  }
-  else {
-    res.send(JSON.stringify({posts: posts}));
-  }
+  post.find(query).limit(20).exec(function(err, result) {
+    if (err) {
+      console.log(err);
+      res.sendStatus(500)
+    }
+    else {
+      res.send(JSON.stringify({posts: result}));
+    }
+  });
 });
 
 app.get('/posts/:id', function(req, res) {
-    let post = {};
+  if (req.params.id && req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    const query = { '_id': req.params.id }
     
-    if (req.params && req.params.id) {
-      post = _.find(posts, function(post) {
-        return post.id == req.params.id;
-      });
-    }
-
-   res.send(JSON.stringify({posts: post}));
+    post.findOne(query).exec(function(err, result) {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500)
+      }
+      else {
+        res.send(JSON.stringify({posts: result}));
+      }
+    });
+  }
+  else {
+    res.sendStatus(400) // Invalid ID
+  }
 });
 
 app.listen(4000, function () {
