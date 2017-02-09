@@ -6,7 +6,7 @@ import { PostCreateComponent } from './post-create.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'createpost', component: PostCreateComponent }
+      { path: 'create', component: PostCreateComponent }
     ])
   ],
   exports: [RouterModule]
