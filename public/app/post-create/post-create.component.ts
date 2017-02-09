@@ -1,5 +1,6 @@
 import { Component }                          from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router }            from '@angular/router';
 
 import { Post }         from '../shared/post-service/post';
 import { PostService }  from '../shared/post-service/post.service';
@@ -12,7 +13,11 @@ import { PostService }  from '../shared/post-service/post.service';
 export class PostCreateComponent {
   postForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private postService: PostService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {
     this.createForm();
   }
 
@@ -24,7 +29,24 @@ export class PostCreateComponent {
     });
   }
 
-  savePost(value: any){
-    console.log(value);
+  savePost(value: any): void {
+    let post = new Post();
+    post = {
+      _id: '',
+      date: new Date(),
+      author: value.author,
+      title: value.title,
+      post: value.post
+    };
+
+    this.postService.create(post)
+    .then(post => {
+      // Redirect to the new post
+      this.router.navigate(['/posts', post._id]);
+    });
+  }
+
+  goToSelect(post: Post): void {
+    this.router.navigate(['/posts', post._id]);
   }
 }

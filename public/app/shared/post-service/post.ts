@@ -3,4 +3,5 @@ export class Post {
   date: Date;
   author: String;
   title: String;
+  post: String;
 }

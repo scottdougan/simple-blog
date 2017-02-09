@@ -10,25 +10,34 @@ import { Post } from './post';
 
 @Injectable()
 export class PostService {
-  private postsUrl = 'http://localhost:4000/posts';  
+  private api = 'http://localhost:4000';
+  private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
 
   getPosts(): Observable<Post[]> {
-    return this.http.get(this.postsUrl)
+    return this.http.get(`${this.api}/posts`)
                .map(response => response.json().posts as Post[])
   }
 
   getPost(id: string): Observable<Post> {
     return this.http
-               .get(`${this.postsUrl}/${id}`)
+               .get(`${this.api}/posts/${id}`)
                .map(response => response.json().posts as Post);
   }
 
   search(term: string): Observable<Post[]> {
     return this.http
-               .get(`${this.postsUrl}/?title=~${term}`)
+               .get(`${this.api}/posts/?title=~${term}`)
                .map(response => response.json().posts as Post[]);
+  }
+
+  create(post: Post): Promise<Post> {
+    return this.http
+               .post(`${this.api}/create`, JSON.stringify({post: post}), {headers: this.headers})
+               .toPromise()
+               .then(res => res.json().post as Post)
+               .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {
