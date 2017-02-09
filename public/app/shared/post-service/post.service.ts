@@ -40,6 +40,20 @@ export class PostService {
                .catch(this.handleError);
   }
 
+  delete(id: string): Promise<Boolean> {
+    return this.http
+               .delete(`${this.api}/posts/${id}`)
+               .toPromise()
+               .then(res => {
+                 console.log(res);
+                 if (res.status == 200) {
+                   return true;
+                 }
+                 return false;
+               })
+               .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error.message || error);

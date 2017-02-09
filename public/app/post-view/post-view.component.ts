@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, OnInit }      from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
 
 import { Post }         from '../shared/post-service/post';
@@ -18,7 +18,8 @@ export class PostViewComponent implements OnInit {
   constructor(
     private postService: PostService,
     private route: ActivatedRoute,
-    private location: Location) {}
+    private location: Location,
+    private router: Router) {}
 
   // routerOnActivate(curr: RouteSegment): void {
   //       let id = curr.getParam('id');
@@ -38,5 +39,15 @@ export class PostViewComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  deletePost(): void {
+    this.postService.delete(this.post._id)
+    .then(deleted => {
+      if (deleted) {
+        // Redirect back to the list
+        this.router.navigate(['/posts']);
+      }
+    });
   }
 }
