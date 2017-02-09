@@ -1,9 +1,10 @@
 const express = require('express'),
+  bodyParser = require('body-parser'),
   mongoose = require('mongoose'),
   mongoQS = require('mongo-querystring'),
   passport = require('passport'),
   _ = require('underscore'),
-  post = require('./models/post');
+  Post = require('./models/post');
 
 // Setup
 const app = express();
@@ -13,6 +14,8 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use(bodyParser.json())
+
 mongoose.connect('mongodb://localhost/simple_blog');
 qs = new mongoQS({});
 
@@ -21,7 +24,7 @@ qs = new mongoQS({});
 app.get('/posts', function (req, res) {
   const query = qs.parse(req.query);
 
-  post.find(query).limit(20).exec(function(err, result) {
+  Post.find(query).limit(20).exec(function(err, result) {
     if (err) {
       console.log(err);
       res.sendStatus(500)
@@ -36,7 +39,7 @@ app.get('/posts/:id', function(req, res) {
   if (req.params.id && req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     const query = { '_id': req.params.id }
     
-    post.findOne(query).exec(function(err, result) {
+    Post.findOne(query).exec(function(err, result) {
       if (err) {
         console.log(err);
         res.sendStatus(500)
@@ -48,6 +51,32 @@ app.get('/posts/:id', function(req, res) {
   }
   else {
     res.sendStatus(400) // Invalid ID
+  }
+});
+
+app.post('/create', function(req, res) {
+  const receivedPost = req.body.post;
+
+  if (receivedPost) {
+    const newPost = new Post({
+      date: receivedPost.date,
+      author: receivedPost.author,
+      title: receivedPost.title,
+      post: receivedPost.post
+    });
+
+    newPost.save(function (err) {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500)
+      }
+      else {
+        res.send(JSON.stringify({post: newPost}));
+      }
+    });
+  }
+  else {
+    res.sendStatus(400) // No post?
   }
 });
 
