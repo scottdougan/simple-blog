@@ -21,14 +21,6 @@ export class PostViewComponent implements OnInit {
     private location: Location,
     private router: Router) {}
 
-  // routerOnActivate(curr: RouteSegment): void {
-  //       let id = curr.getParam('id');
-  //       this.postService.getPost(id)
-  //                       .subscribe(
-  //                          post => this.post = post,
-  //                          error =>  this.errorMessage = <any>error);
-  //   }
-
   ngOnInit(): void {
     this.route.params
       .switchMap((params: Params) => this.postService.getPost(params['id']))
