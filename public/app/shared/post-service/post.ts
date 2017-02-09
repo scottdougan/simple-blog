@@ -1,7 +1,7 @@
 export class Post {
-  _id: String;
+  _id: string;
   date: Date;
-  author: String;
-  title: String;
-  post: String;
+  author: string;
+  title: string;
+  post: string;
 }
