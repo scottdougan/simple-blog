@@ -11,6 +11,7 @@ const app = express();
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "DELETE, GET, POST");
   next();
 });
 
@@ -77,6 +78,30 @@ app.post('/create', function(req, res) {
   }
   else {
     res.sendStatus(400) // No post?
+  }
+});
+
+app.delete('/posts/:id', function(req, res) {
+  if (req.params.id && req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+    const query = { '_id': req.params.id }
+    
+    Post.remove(query).exec(function(err, removed) {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500)
+      }
+      else {
+        if (removed.result.n) {
+          res.sendStatus(200);
+        }
+        else {
+          res.sendStatus(400);
+        }
+      }
+    });
+  }
+  else {
+    res.sendStatus(400) // Invalid ID
   }
 });
 
