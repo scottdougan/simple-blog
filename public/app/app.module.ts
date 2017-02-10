@@ -5,6 +5,7 @@ import { HttpModule, JsonpModule }    from '@angular/http';
 
 import { AppComponent }         from './app.component';
 import { AppRoutingModule }     from './app-routing.module';
+import { MaterializeDirective } from 'angular2-materialize';
 
 import { HomeModule } from './home/home.module';
 import { PostsModule } from './posts/posts.module';
@@ -26,7 +27,8 @@ import { SharedModule } from './shared/shared.module';
     SharedModule.forRoot()
   ],
   declarations: [
-    AppComponent
+    AppComponent,
+    MaterializeDirective
   ],
   bootstrap: [ AppComponent ]
 })

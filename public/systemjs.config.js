@@ -18,13 +18,19 @@
 
       // other libraries
       'rxjs':                      'npm:rxjs',
+      "angular2-materialize": "node_modules/angular2-materialize",
+      "materialize-css": "node-modules/materialize-css",
     },
     packages: {
-      app: {
+      'app': {
         main: './main.js',
         defaultExtension: 'js'
       },
-      rxjs: {
+      'rxjs': {
+        defaultExtension: 'js'
+      },
+      'angular2-materialize': {
+        main: 'dist/materialize-directive',
         defaultExtension: 'js'
       }
     }
