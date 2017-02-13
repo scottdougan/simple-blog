@@ -6,6 +6,7 @@ const express = require('express'),
   _ = require('underscore'),
   Post = require('./models/post');
 
+
 // Setup
 const app = express();
 app.use(function(req, res, next) {
@@ -14,18 +15,22 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "DELETE, GET, POST");
   next();
 });
-
 app.use(bodyParser.json())
 
 mongoose.connect('mongodb://localhost/simple_blog');
-qs = new mongoQS({});
 
 
 // Endpoints
 app.get('/posts', function (req, res) {
-  const query = qs.parse(req.query);
+  let query = {};
+  if (req.query.search) {
+    query =  { $or: [
+      { title: { '$regex': req.query.search, '$options': 'i' } },
+      { author: { '$regex': req.query.search, '$options': 'i' } }
+    ]};
+  }
 
-  Post.find(query).limit(20).exec(function(err, result) {
+  Post.find(query).exec(function(err, result) {
     if (err) {
       console.log(err);
       res.sendStatus(500)

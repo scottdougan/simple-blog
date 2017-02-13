@@ -12,7 +12,6 @@
     "express": "4.14.0",
     "body-parser": "1.16.0",
     "mongoose": "4.7.7",
-    "mongo-querystring": "4.1.0",
     "passport": "0.3.2",
     "underscore": "1.8.3"
   },
