@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Headers, Http, RequestOptions, URLSearchParams } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 
 import 'rxjs/add/operator/toPromise';
@@ -27,8 +27,17 @@ export class PostService {
   }
 
   search(term: string): Observable<Post[]> {
-    return this.http
-               .get(`${this.api}/posts/?title=~${term}`)
+    let params = new URLSearchParams();
+    if (term) {
+      params.append('search', term);
+    }  
+
+    const options = new RequestOptions({
+      headers: this.headers,
+      search: params
+    });
+
+    return this.http.get(`${this.api}/posts/`, options)
                .map(response => response.json().posts as Post[]);
   }
 
