@@ -1,12 +1,10 @@
-<div>
-  <p>Welcome to my blog!</p>
+<div class="row">
+  <h2 class="col s12">Welcome to my blog!</h2>
+  <h4 class="col s12">Top 5 posts</h4>
 
-  <h2>Top posts</h2>
-  <ul class="posts">
-      <li *ngFor="let post of posts"
-          [class.selected]="post === selectedPost"
-          (click)="onSelect(post)">
-          {{post.title}}
-      </li>
-  </ul>
+  <div *ngFor="let post of posts">
+    <a class="btn-flat col s12" (click)="onSelect(post)">
+      {{post.title}}
+    </a>
+  </div>
 </div>
