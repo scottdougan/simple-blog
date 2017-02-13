@@ -1,21 +1,30 @@
-<h2>Create post</h2>
-<form [formGroup]="postForm" (ngSubmit)="savePost(postForm.value)" novalidate>
-  <div class="form-group">
-    <label class="center-block">Author:
-      <input class="form-control" formControlName="author">
-    </label>
-  </div>
-  <div class="form-group">
-    <label class="center-block">Title:
-      <input class="form-control" formControlName="title">
-    </label>
-  </div>
-  <div class="form-group">
-    <label class="center-block">Post:
-      <input class="form-control" formControlName="post">
-    </label>
-  </div>
-  <div class="form-group">
-    <button type="submit" class="btn btn-primary">Save</button>
-  </div>
-</form>
+<div class="row">
+  <h2 class="col s12">Create post</h2>
+
+  <form class="col s12" [formGroup]="postForm" (ngSubmit)="savePost(postForm.value)" novalidate>
+    <div class="row">
+      <div class="form-group col s6">
+        <label class="center-block">Author:
+          <input class="form-control" formControlName="author">
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col s6">
+        <label class="center-block">Title:
+          <input class="form-control" formControlName="title">
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col s12">
+        <label class="center-block">Post:
+          <textarea class="materialize-textarea form-control" formControlName="post"></textarea>
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+</div>
