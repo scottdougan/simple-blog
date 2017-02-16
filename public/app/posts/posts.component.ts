@@ -65,8 +65,9 @@ export class PostsComponent implements OnInit {
   getPosts() {
     this.postService.getPosts()
                     .subscribe(
-                       posts => this.posts = posts,
-                       error =>  this.errorMessage = <any>error);
+                      posts => this.posts = posts,
+                      error =>  this.errorMessage = <any>error
+                    );
   }
 
   onSelect(post: Post): void {
