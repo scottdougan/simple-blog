@@ -23,7 +23,6 @@ export class PostsComponent implements OnInit {
   errorMessage: string;
   posts: Post[];
   private searchTerms = new Subject<string>();
-  private postSearchoObservable: Observable<Post[]>
   private limitOptions = [
     {value:5,name:"5"},
     {value:10,name:"10"},
@@ -42,7 +41,7 @@ export class PostsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPosts();
-    this.postSearchoObservable = this.searchTerms
+    this.searchTerms
       .debounceTime(300)        // wait 300ms after each keystroke before considering the term
       .distinctUntilChanged()   // ignore if next search term is same as previous
       .switchMap(term => {
@@ -56,11 +55,11 @@ export class PostsComponent implements OnInit {
         // TODO: add real error handling
         console.log(error);
         return Observable.of<Post[]>([]);
-      });
-
-      this.postSearchoObservable.subscribe(
-         posts => this.posts = posts,
-         error =>  this.errorMessage = <any>error);
+      })
+      .subscribe(
+        posts => this.posts = posts,
+        error =>  this.errorMessage = <any>error
+      );
   }
 
   getPosts() {
