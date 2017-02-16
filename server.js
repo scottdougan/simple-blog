@@ -56,7 +56,7 @@ app.get('/posts', function(req, res) {
   }
 
   const skip = getRequestNumber(req.query.skip, 0);
-  const limit = getRequestNumber(req.query.limit, 20);
+  const limit = getRequestNumber(req.query.limit, 5);
 
   Post.find(query).skip(skip).limit(limit).sort(sort).exec(function(err, result) {
     if (err) {
