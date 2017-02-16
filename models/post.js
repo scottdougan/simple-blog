@@ -15,6 +15,11 @@ const postSchema = new Schema({
     type: String,
     required: true
   },
+  viewCount: {
+    type: Number,
+    default: 0,
+    required: true
+  },
   post: {
     type: String,
     required: true

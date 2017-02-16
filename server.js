@@ -63,7 +63,7 @@ app.get('/posts/:id', function(req, res) {
   if (req.params.id && req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     const query = { '_id': req.params.id }
     
-    Post.findOne(query).exec(function(err, result) {
+    Post.findByIdAndUpdate(query, {$inc: {viewCount: 1} }).exec(function(err, result) {
       if (err) {
         console.log(err);
         res.sendStatus(500)
