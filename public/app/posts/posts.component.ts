@@ -25,6 +25,7 @@ export class PostsComponent implements OnInit {
   private postSearchoOservable: Observable<Post[]>
   selectedPost: Post;
 
+
   constructor(
     private postService: PostService,
     private router: Router) { }
@@ -38,7 +39,13 @@ export class PostsComponent implements OnInit {
     this.postSearchoOservable = this.searchTerms
       .debounceTime(300)        // wait 300ms after each keystroke before considering the term
       .distinctUntilChanged()   // ignore if next search term is same as previous
-      .switchMap(term => this.postService.search(term))
+      .switchMap(term => {
+        const query = {
+          searchTitle: term,
+          limit:  20
+        }
+        return this.postService.search(query)
+      })
       .catch(error => {
         // TODO: add real error handling
         console.log(error);
@@ -51,6 +58,7 @@ export class PostsComponent implements OnInit {
   }
 
   getPosts() {
+
     this.postService.getPosts()
                     .subscribe(
                        posts => this.posts = posts,

@@ -26,11 +26,11 @@ export class PostService {
                .map(response => response.json().posts as Post);
   }
 
-  search(term: string): Observable<Post[]> {
-    let params = new URLSearchParams();
-    if (term) {
-      params.append('search', term);
-    }  
+  search(query: any) {
+    let params: URLSearchParams = new URLSearchParams();
+    for(let key in query){
+      params.set(key.toString(), query[key]);
+    }
 
     const options = new RequestOptions({
       headers: this.headers,

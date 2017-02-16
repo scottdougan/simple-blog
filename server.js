@@ -19,18 +19,36 @@ app.use(bodyParser.json())
 
 mongoose.connect('mongodb://localhost/simple_blog');
 
+function getRequestNumber(request, defaultNumber) {
+  if (request) {
+    const requestNumber = Number(request)
+
+    if (_.isNumber(requestNumber) && !_.isNaN(requestNumber)) {
+      return requestNumber;
+    }
+  }
+  return defaultNumber // Return the default
+}
 
 // Endpoints
-app.get('/posts', function (req, res) {
+app.get('/posts', function(req, res) {
   let query = {};
-  if (req.query.search) {
-    query =  { $or: [
-      { title: { '$regex': req.query.search, '$options': 'i' } },
-      { author: { '$regex': req.query.search, '$options': 'i' } }
-    ]};
+  if (req.query.searchTitle) {
+    query.title = { '$regex': req.query.searchTitle, '$options': 'i' }
+  }
+  if (req.query.author) {
+    query.title = req.query.author;
   }
 
-  Post.find(query).exec(function(err, result) {
+  let sort = {};
+  if (req.query.sort) {
+    sort = req.query.sort;
+  }
+
+  const skip = getRequestNumber(req.query.skip, 0);
+  const limit = getRequestNumber(req.query.limit, 20);
+
+  Post.find(query).skip(skip).limit(limit).sort(sort).exec(function(err, result) {
     if (err) {
       console.log(err);
       res.sendStatus(500)
