@@ -18,9 +18,13 @@ export class HomeComponent {
     private postService: PostService) { }
 
   ngOnInit(): void {
-    this.postService.getPosts()
+    const query = {
+      sort: 'viewCount:-1',
+      limit:  5
+    }
+    this.postService.search(query)
                     .subscribe(
-                       posts => this.posts = posts.slice(1, 5),
+                       posts => this.posts = posts,
                        error =>  this.errorMessage = <any>error);
   }
 

@@ -41,8 +41,18 @@ app.get('/posts', function(req, res) {
   }
 
   let sort = {};
-  if (req.query.sort) {
-    sort = req.query.sort;
+  if (req.query.sort && typeof(req.query.sort) === 'string') {
+    sortList = req.query.sort.split(" ");
+    for (let i = 0; i < sortList.length; i++) {
+      const sortParameters = sortList[i].split(":");
+      if (sortParameters.length == 2 && !(sortParameters[0] in sort)) {
+        sort[sortParameters[0]] = sortParameters[1];
+      }
+      else {
+        res.sendStatus(400) // Bad sort query
+        return;
+      }
+    }
   }
 
   const skip = getRequestNumber(req.query.skip, 0);
