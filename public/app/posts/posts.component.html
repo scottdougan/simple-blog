@@ -4,6 +4,12 @@
       <input #searchBox id="search-box" (keyup)="search(searchBox.value)">
     </label>
   </div>
+  <div class="input-field col s2">
+    <select [(ngModel)]="selectedLimit" name="limit" materialize="material_select">
+      <option *ngFor="let limit of limitOptions" [value]="limit.value">{{limit.name}}</option>
+    </select>
+    <label>Limit</label>
+  </div>
   <div *ngFor="let post of posts">
     <a class="btn-flat col s12" (click)="onSelect(post)">
       {{post.title}}

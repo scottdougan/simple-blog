@@ -4,6 +4,7 @@ import { Router }            from '@angular/router';
 import { Observable }        from 'rxjs/Observable';
 import { Subject }           from 'rxjs/Subject';
 
+
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
@@ -16,7 +17,7 @@ import { PostService }  from '../shared/post-service/post.service';
 @Component({
   moduleId: module.id,
   selector: 'posts',
-  templateUrl: './posts.component.html'
+  templateUrl: './posts.component.html',
 })
 export class PostsComponent implements OnInit {
   errorMessage: string;
@@ -24,6 +25,12 @@ export class PostsComponent implements OnInit {
   private searchTerms = new Subject<string>();
   private postSearchoOservable: Observable<Post[]>
   selectedPost: Post;
+  private limitOptions = [
+    {value:5,name:"5"},
+    {value:10,name:"10"},
+    {value:20,name:"20"}
+  ];
+  private selectedLimit = 5;
 
 
   constructor(
@@ -42,7 +49,7 @@ export class PostsComponent implements OnInit {
       .switchMap(term => {
         const query = {
           searchTitle: term,
-          limit:  20
+          limit:  this.selectedLimit
         }
         return this.postService.search(query)
       })
@@ -58,7 +65,6 @@ export class PostsComponent implements OnInit {
   }
 
   getPosts() {
-
     this.postService.getPosts()
                     .subscribe(
                        posts => this.posts = posts,
