@@ -24,7 +24,6 @@ export class PostsComponent implements OnInit {
   posts: Post[];
   private searchTerms = new Subject<string>();
   private postSearchoObservable: Observable<Post[]>
-  selectedPost: Post;
   private limitOptions = [
     {value:5,name:"5"},
     {value:10,name:"10"},
