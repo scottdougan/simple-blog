@@ -1,9 +1,9 @@
-import { Component }                          from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router }            from '@angular/router';
+import { Router } from '@angular/router';
 
-import { Post }         from '../shared/post-service/post';
-import { PostService }  from '../shared/post-service/post.service';
+import { Post } from '../core/post';
+import { PostService } from '../core/post.service';
 
 @Component({
   moduleId: module.id,

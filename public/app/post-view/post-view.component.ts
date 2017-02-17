@@ -1,10 +1,11 @@
-import 'rxjs/add/operator/switchMap';
-import { Component, OnInit }      from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { Location }               from '@angular/common';
+import { Location } from '@angular/common';
 
-import { Post }         from '../shared/post-service/post';
-import { PostService }  from '../shared/post-service/post.service';
+import 'rxjs/add/operator/switchMap';
+
+import { Post } from '../core/post';
+import { PostService } from '../core/post.service';
 
 @Component({
   moduleId: module.id,
