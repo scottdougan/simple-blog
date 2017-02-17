@@ -22,7 +22,7 @@ export class HomeComponent {
       sort: 'viewCount:-1',
       limit:  5
     }
-    this.postService.search(query)
+    this.postService.getPosts(query)
                     .subscribe(
                        posts => this.posts = posts,
                        error =>  this.errorMessage = <any>error);

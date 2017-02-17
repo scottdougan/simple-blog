@@ -62,7 +62,7 @@ export class PostsComponent implements OnInit {
         if (query.hasOwnProperty('searchTitle') && query['searchTitle'].length == 0) {
           delete query['searchTitle']; // Don't send an empty searchTitle
         }
-        return this.postService.search(query)
+        return this.postService.getPosts(query)
       })
       .catch(error => {
         // TODO: add real error handling

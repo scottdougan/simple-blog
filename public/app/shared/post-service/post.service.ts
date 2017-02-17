@@ -15,18 +15,13 @@ export class PostService {
 
   constructor(private http: Http) { }
 
-  getPosts(): Observable<Post[]> {
-    return this.http.get(`${this.api}/posts`)
-               .map(response => response.json().posts as Post[])
-  }
-
   getPost(id: string): Observable<Post> {
     return this.http
                .get(`${this.api}/posts/${id}`)
                .map(response => response.json().posts as Post);
   }
 
-  search(query: any) {
+  getPosts(query: any) {
     let params: URLSearchParams = new URLSearchParams();
     for(let key in query){
       params.set(key.toString(), query[key]);
