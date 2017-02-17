@@ -5,8 +5,9 @@
     </label>
   </div>
   <div class="input-field col s2">
-    <select [(ngModel)]="selectedLimit" name="limit" materialize="material_select">
-      <option *ngFor="let limit of limitOptions" [value]="limit.value">{{limit.name}}</option>
+    <select [ngModel]="selectedLimit" (ngModelChange)="limitChange($event)" name="limitSelect" materialize="material_select">
+      <!-- <option *ngFor="let limit of limitOptions" [value]="limit.value">{{limit.name}}</option> -->
+      <option [ngValue]="limit" *ngFor="let limit of limitOptions">{{limit.value}}</option>
     </select>
     <label>Limit</label>
   </div>

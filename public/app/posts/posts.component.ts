@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router';
-
 import { Observable }        from 'rxjs/Observable';
 import { Subject }           from 'rxjs/Subject';
-
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
@@ -22,32 +20,47 @@ import { PostService }  from '../shared/post-service/post.service';
 export class PostsComponent implements OnInit {
   errorMessage: string;
   posts: Post[];
-  private searchTerms = new Subject<string>();
+  private searchQuery = new Subject();
+  private currentSearchTitle = '';
   private limitOptions = [
     {value:5,name:"5"},
     {value:10,name:"10"},
     {value:20,name:"20"}
   ];
-  private selectedLimit = 5;
-
+  private selectedLimit = this.limitOptions[0];
 
   constructor(
     private postService: PostService,
-    private router: Router) { }
+    private router: Router
+  ) { }
 
-  search(term: string): void {
-    this.searchTerms.next(term);
+  search(title: string): void {
+    this.currentSearchTitle = title;
+
+    const query = {
+      searchTitle: title,
+      limit:  this.selectedLimit.value
+    }
+    this.searchQuery.next(query);
+  }
+
+  limitChange(newLimit: any) {
+    this.selectedLimit = newLimit;
+
+    const query = {
+      searchTitle: this.currentSearchTitle,
+      limit:  newLimit.value
+    };
+    this.searchQuery.next(query);
   }
 
   ngOnInit(): void {
-    this.getPosts();
-    this.searchTerms
+    this.searchQuery
       .debounceTime(300)        // wait 300ms after each keystroke before considering the term
       .distinctUntilChanged()   // ignore if next search term is same as previous
-      .switchMap(term => {
-        const query = {
-          searchTitle: term,
-          limit:  this.selectedLimit
+      .switchMap(query => {
+        if (query.hasOwnProperty('searchTitle') && query['searchTitle'].length == 0) {
+          delete query['searchTitle']; // Don't send an empty searchTitle
         }
         return this.postService.search(query)
       })
@@ -60,14 +73,10 @@ export class PostsComponent implements OnInit {
         posts => this.posts = posts,
         error =>  this.errorMessage = <any>error
       );
-  }
 
-  getPosts() {
-    this.postService.getPosts()
-                    .subscribe(
-                      posts => this.posts = posts,
-                      error =>  this.errorMessage = <any>error
-                    );
+      this.searchQuery.next({
+        limit:  this.selectedLimit.value
+      });
   }
 
   onSelect(post: Post): void {
