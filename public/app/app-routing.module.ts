@@ -5,8 +5,8 @@ import { RouterModule, Routes } from '@angular/router';
 @NgModule({
   imports: [
     RouterModule.forRoot([
-      /* Nothing to load. */
-      ])
+      { path: '', redirectTo: '/home', pathMatch: 'full' }
+    ])
   ],
   exports: [ RouterModule ]
 })
